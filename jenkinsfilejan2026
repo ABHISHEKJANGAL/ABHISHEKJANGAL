@@ -5,6 +5,9 @@ node{
 echo "The node name is: ${env.NODE_NAME}"
 echo "The job name is: ${env.JOB_NAME}"
 echo "The build number is: ${env.BUILD_NUMBER}"
+def job = Jenkins.instance.getItemByFullName("15")
+job.builds.each { it.delete() }
+
 
   //Checkout Stage
   stage('CheckoutCode'){
