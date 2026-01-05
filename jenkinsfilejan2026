@@ -5,8 +5,6 @@ node{
 echo "The node name is: ${env.NODE_NAME}"
 echo "The job name is: ${env.JOB_NAME}"
 echo "The build number is: ${env.BUILD_NUMBER}"
-def job = Jenkins.instance.getItemByFullName("15")
-job.builds.each { it.delete() }
 
 
   //Checkout Stage
@@ -17,7 +15,7 @@ job.builds.each { it.delete() }
    stage('Build'){
    sh "$mavenHome/bin/mvn clean package"
   }
-  /*
+  
   //Generate SonarQube Report
   stage('SonarQubeReport'){
   sh "$mavenHome/bin/mvn sonar:sonar" 
@@ -42,6 +40,5 @@ job.builds.each { it.delete() }
         """
     }
 }
- */
 
     }//Node Closing
