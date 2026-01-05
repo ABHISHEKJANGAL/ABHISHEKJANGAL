@@ -1,0 +1,40 @@
+node{
+  
+  def mavenHome = tool name: "maven3.9.11"
+  
+  //Checkout Stage
+  stage('CheckoutCode'){
+  git branch: 'development', credentialsId: '42886955-a424-4d97-887b-26ae6a2f6aee', url: 'https://github.com/ABHISHEKJANGAL/maven-web-application.git'
+  }
+  
+   stage('Build'){
+   sh "$mavenHome/bin/mvn clean package"
+  }
+  
+  //Generate SonarQube Report
+  stage('SonarQubeReport'){
+  sh "$mavenHome/bin/mvn sonar:sonar" 
+  }
+  
+  // Upload Artifact into Artifact repo
+  stage('UploadArtifactIntoNexus'){
+  sh "$mavenHome/bin/mvn deploy"
+  }
+  
+  stage('DeployAppIntoTomcat') {
+    sshagent(['098e3b18-da7f-4e5c-820f-22edfec79503']) {
+        // Step 1: Copy WAR to /tmp
+        sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.233.146.45:/tmp/"
+        
+        // Step 2: SSH into server and move WAR to webapps with sudo
+        sh """
+        ssh -o StrictHostKeyChecking=no ec2-user@13.233.146.45 '
+        sudo mv /tmp/maven-web-application.war /opt/tomcat9/webapps/ &&
+        sudo chown tomcat:tomcat /opt/tomcat9/webapps/maven-web-application.war
+        '
+        """
+    }
+}
+ 
+
+    }//Node Closing
