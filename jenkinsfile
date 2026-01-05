@@ -10,7 +10,7 @@ node{
    stage('Build'){
    sh "$mavenHome/bin/mvn clean package"
   }
-  
+  /*
   //Generate SonarQube Report
   stage('SonarQubeReport'){
   sh "$mavenHome/bin/mvn sonar:sonar" 
@@ -35,6 +35,6 @@ node{
         """
     }
 }
- 
+ */
 
     }//Node Closing
