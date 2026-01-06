@@ -2,8 +2,8 @@ node{
   
   def mavenHome = tool name: "maven3.9.11"
 
-echo "The node name is: ${env.NODE_NAME}"
-echo "The job name is: ${env.JOB_NAME}"
+buildName 'Dev - ${BUILD_NUMBER}'
+buildDescription 'Pipeline Script - Scriptedway'
 echo "The build number is: ${env.BUILD_NUMBER}"
 
 
@@ -15,7 +15,7 @@ echo "The build number is: ${env.BUILD_NUMBER}"
    stage('Build'){
    sh "$mavenHome/bin/mvn clean package"
   }
-  
+/*  
   //Generate SonarQube Report
   stage('SonarQubeReport'){
   sh "$mavenHome/bin/mvn sonar:sonar" 
@@ -40,5 +40,5 @@ echo "The build number is: ${env.BUILD_NUMBER}"
         """
     }
 }
-
+*/
     }//Node Closing
